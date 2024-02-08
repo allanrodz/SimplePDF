@@ -10,6 +10,8 @@
 </head>
 <body>
 
+<button id="toggleFullScreenBtn" style="position: fixed; z-index: 1000; left: 20px; top: 20px; padding: 10px; color:white;">Toggle Full Screen</button>
+
 <div id="flipbookContainer"></div>
 
 <!-- jQuery -->
@@ -17,53 +19,48 @@
 <!-- Flipbook main Js file -->
 <script src="lib/js/dflip.min.js" type="text/javascript"></script>
 <script>
-jQuery(document).ready(function () {
-  var pdf = '/Kilkenny_GAA_Yearbook_2022.pdf';
-  var options = {
-    // Set initial dimensions to fill the screen, or use specific values as needed
-    height: jQuery(window).height(),
-    width: jQuery(window).width(),
-    duration: 700,
-    backgroundColor: "#2F2F2F"
-  };
-  var flipBook = jQuery("#flipbookContainer").flipBook(pdf, options);
-
-  // Update the flipbook size on window resize or fullscreen change
-  function updateFlipbookSize() {
-    var newHeight = jQuery(window).height();
-    var newWidth = jQuery(window).width();
-    // Update the flipbook dimensions here
-    // This method will depend on your flipbook plugin's API; you might need to check the documentation
-    // Example: flipBook.resize(newWidth, newHeight);
-  }
-
-  // Listen for fullscreen change across browsers
-  document.addEventListener("fullscreenchange", updateFlipbookSize);
-  document.addEventListener("webkitfullscreenchange", updateFlipbookSize);
-  document.addEventListener("mozfullscreenchange", updateFlipbookSize);
-  document.addEventListener("MSFullscreenChange", updateFlipbookSize);
-
-  // Listen for window resize
-  jQuery(window).resize(updateFlipbookSize);
-
-  jQuery("#goFullScreenBtn").on("click", function() {
-    openFullscreen();
-  });
-
-  function openFullscreen() {
-    var elem = document.getElementById("flipbookContainer");
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
+  jQuery(document).ready(function () {
+    var pdf = 'https://raw.githubusercontent.com/allanrodz/SimplePDF/main/Kilkenny_GAA_Yearbook_2022.pdf';
+    var options = {
+      height: jQuery(window).height(),
+      width: jQuery(window).width(),
+      duration: 700,
+      backgroundColor: "#2F2F2F"
+    };
+    var flipBook = jQuery("#flipbookContainer").flipBook(pdf, options);
+  
+    jQuery("#toggleFullScreenBtn").on("click", function() {
+      toggleFullscreen();
+    });
+  
+    function toggleFullscreen() {
+      var elem = document.getElementById("flipbookContainer");
+      if (!document.fullscreenElement && !document.mozFullScreenElement &&
+          !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+          elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+          elem.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+          document.msExitFullscreen();
+        }
+      }
     }
-  }
-});
-</script>
+  });
+  </script>
+  
   <!-- jQuery  -->
   <script src="lib/js/libs/jquery.min.js" type="text/javascript"></script>
   <!-- Flipbook main Js file -->
